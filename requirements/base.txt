@@ -1,0 +1,6 @@
+djangorestframework
+python-decouple
+sqlparse
+whitenoise
+asgiref
+dj-database-url
