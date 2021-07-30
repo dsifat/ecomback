@@ -7,4 +7,5 @@ asgiref
 dj-database-url
 python-webpack-boilerplate
 Pillow
+drf_yasg
 drf-yasg[validation]

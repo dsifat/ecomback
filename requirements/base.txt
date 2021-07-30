@@ -1,6 +1,9 @@
+wheel
 djangorestframework
 python-decouple
 sqlparse
 whitenoise
 asgiref
 dj-database-url
+drf_yasg
+drf_yasg[validation]

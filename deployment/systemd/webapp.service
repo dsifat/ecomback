@@ -1,0 +1,9 @@
+[Unit]
+Description=webapp daemon
+
+[Service]
+User=root
+WorkingDirectory=/home/dealbuzz/bepari
+ExecStart=/mnt/c/Users/abdullah.aktar/PythonProjects/cashkaro/venv/bin/gunicorn core.wsgi:application -c deployment/gunicorn/gunicorn_cfg.py
+[Install]
+WantedBy=multi-user.target
