@@ -35,3 +35,4 @@ virtualenv
 /.stfolder
 **/__pycache__/*
 data/*
+staticfiles/*
