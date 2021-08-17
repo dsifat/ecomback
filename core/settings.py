@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'webpack_loader',
     'apps.ecommerce',
     'drf_yasg',
+    'django_seed',
 
 ]
 
