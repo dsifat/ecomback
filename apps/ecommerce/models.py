@@ -15,6 +15,25 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=256)
     category = models.ManyToManyField(Category)
+    specifications = models.JSONField(null=True)
 
     class Meta:
         db_table = "Product"
+
+
+
+class Stock(models.Model):
+    product_code = models.CharField(max_length=20)
+    stock = models.IntegerField(default=0)
+
+
+class Order(models.Model):
+    cart = models.JSONField()
+    date = models.DateTimeField()
+    location = models.JSONField()
+    is_paid = models.BooleanField(null=True)
+    payment_mode = models.JSONField(null=True)
+    test = models.IntegerField(default=0)
+
+class PaymentMode(models.Model):
+    name = models.CharField(max_length=120)

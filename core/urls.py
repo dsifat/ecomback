@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.http import HttpResponse
+from django.urls import path, include
+from openid.fetchers import HTTPResponse
 from rest_framework import permissions, routers
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -43,11 +45,18 @@ router = routers.DefaultRouter()
 
 router.register(r'product', ProductViewSet, basename="product")
 
+def hello(request):
+    a = 10
+    b=5
+    return HttpResponse('asd')
+
+
 urlpatterns = [
+    path('', hello, name="asdasd"),
     path('admin/', admin.site.urls),
     path('api/v1/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls'))
 ]
 
 urlpatterns += router.urls
