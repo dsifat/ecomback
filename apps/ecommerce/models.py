@@ -9,7 +9,7 @@ class Category(models.Model):
         return f"{self.name}"
 
     class Meta:
-        db_table = "Category"
+        db_table = "category"
 
 
 class Product(models.Model):
@@ -18,8 +18,7 @@ class Product(models.Model):
     specifications = models.JSONField(null=True)
 
     class Meta:
-        db_table = "Product"
-
+        db_table = "product"
 
 
 class Stock(models.Model):
@@ -33,7 +32,7 @@ class Order(models.Model):
     location = models.JSONField()
     is_paid = models.BooleanField(null=True)
     payment_mode = models.JSONField(null=True)
-    test = models.IntegerField(default=0)
+
 
 class PaymentMode(models.Model):
     name = models.CharField(max_length=120)

@@ -1,29 +1,29 @@
-from rest_framework import viewsets
-from rest_framework.authentication import SessionAuthentication
+from drf_spectacular.authentication import BasicScheme
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
+from rest_framework import viewsets, permissions, serializers, status
+from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.decorators import authentication_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from apps.ecommerce.models import Product
 from apps.ecommerce.serializers import ProductSerializer
 
+class TokenVerifyResponseSerializer(serializers.Serializer):
+    def create(self, validated_data):
+        raise NotImplementedError()
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError()
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    authentication_classes = [JWTAuthentication]
+    authentication_classes = [SessionAuthentication,]
+    permission_classes = [permissions.IsAuthenticated,]
+    # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
 
-    def get_permissions(self):
-        """
-        Instantiates and returns the list of permissions that this view requires.
-        """
-        if self.action == 'list':
-            permission_classes = [IsAuthenticated]
-        else:
-            permission_classes = [IsAdminUser]
-        return [permission() for permission in permission_classes]
-
     def list(self, request, *args, **kwargs):
-        a =10
-        print("asdasd")
-        super().list(request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
 
