@@ -32,27 +32,26 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'corsheaders',
-    'admin_interface',
-    'colorfield',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'drf_spectacular',
+
+
     'rest_framework',
     'rest_framework.authtoken',
-    'dj_rest_auth',
-
-    'django.contrib.sites',
     'allauth',
-    'dj_rest_auth.registration',
     'rest_framework_simplejwt',
-
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'webpack_loader',
-    'apps.ecommerce',
 
+    'apps.ecommerce',
     'django_seed',
 
 ]
@@ -112,11 +111,7 @@ AUTH_PASSWORD_VALIDATORS = []
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_TZ = True
 
