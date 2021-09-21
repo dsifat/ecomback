@@ -7,8 +7,9 @@ from rest_framework.decorators import authentication_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from apps.ecommerce.models import Product
-from apps.ecommerce.serializers import ProductSerializer
+from apps.ecommerce.models import Product, Category
+from apps.ecommerce.serializers import ProductSerializer, CategorySerializer
+
 
 class TokenVerifyResponseSerializer(serializers.Serializer):
     def create(self, validated_data):
@@ -26,4 +27,12 @@ class ProductViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    serializer_class = CategorySerializer
+    authentication_classes = [SessionAuthentication,]
+    permission_classes = [permissions.IsAuthenticated,]
+    queryset = Category.objects.all()
+
 
