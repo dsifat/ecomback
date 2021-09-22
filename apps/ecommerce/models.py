@@ -24,6 +24,9 @@ class Product(models.Model):
     class Meta:
         db_table = "product"
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Stock(models.Model):
     product_code = models.CharField(max_length=20)
