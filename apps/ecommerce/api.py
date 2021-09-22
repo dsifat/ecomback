@@ -20,8 +20,8 @@ class TokenVerifyResponseSerializer(serializers.Serializer):
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
-    authentication_classes = [SessionAuthentication,]
-    permission_classes = [permissions.IsAuthenticated,]
+    authentication_classes = []
+    permission_classes = []
     # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
 
@@ -31,8 +31,8 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
-    authentication_classes = [SessionAuthentication,]
-    permission_classes = [permissions.IsAuthenticated,]
+    authentication_classes = []
+    permission_classes = []
     queryset = Category.objects.all()
 
 
