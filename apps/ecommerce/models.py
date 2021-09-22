@@ -16,6 +16,10 @@ class Product(models.Model):
     name = models.CharField(max_length=256)
     category = models.ManyToManyField(Category)
     specifications = models.JSONField(null=True)
+    price = models.IntegerField(default=0)
+    discount_percentage = models.IntegerField(default=0)
+    discount_category = models.ManyToManyField("ecommerce.DiscountCategory")
+    validity = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = "product"
@@ -36,3 +40,10 @@ class Order(models.Model):
 
 class PaymentMode(models.Model):
     name = models.CharField(max_length=120)
+
+
+class DiscountCategory(models.Model):
+    name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return f"{self.name}"
