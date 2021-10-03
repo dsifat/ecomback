@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'webpack_loader',
+    'django_filters',
 
     'apps.ecommerce',
     'django_seed',
