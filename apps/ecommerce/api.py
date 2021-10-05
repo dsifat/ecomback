@@ -2,8 +2,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, serializers, status
 
 
-from apps.ecommerce.models import Product, Category
-from apps.ecommerce.serializers import ProductSerializer, CategorySerializer
+from apps.ecommerce.models import Product, Category, DiscountCategory
+from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer
 
 
 class TokenVerifyResponseSerializer(serializers.Serializer):
@@ -32,5 +32,12 @@ class CategoryViewSet(viewsets.ModelViewSet):
     authentication_classes = []
     permission_classes = []
     queryset = Category.objects.all()
+
+
+class DCViewset(viewsets.ModelViewSet):
+    serializer_class = DCSerializer
+    authentication_classes = []
+    permission_classes = []
+    queryset = DiscountCategory.objects.all()
 
 
