@@ -33,7 +33,6 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'corsheaders',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -50,7 +49,6 @@ INSTALLED_APPS = [
     'dj_rest_auth.registration',
     'webpack_loader',
     'django_filters',
-
     'apps.ecommerce',
     'django_seed',
 
@@ -217,7 +215,7 @@ from datetime import timedelta
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Deal Buzz API',
-    'DESCRIPTION': '',
+    'DESCRIPTION': 'Ecommerce Application',
     'VERSION': '1.0.0',
     # 'SECURITY': [],
     'SERVE_AUTHENTICATION' : (),

@@ -20,6 +20,7 @@ class Product(models.Model):
     discount_percentage = models.IntegerField(default=0)
     discount_category = models.ManyToManyField("ecommerce.DiscountCategory")
     validity = models.DateTimeField(null=True, blank=True)
+    images = models.JSONField(null=True)
 
     class Meta:
         db_table = "product"
@@ -39,7 +40,7 @@ class Order(models.Model):
     location = models.JSONField()
     is_paid = models.BooleanField(null=True)
     payment_mode = models.JSONField(null=True)
-
+    
 
 class PaymentMode(models.Model):
     name = models.CharField(max_length=120)
