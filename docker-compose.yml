@@ -2,7 +2,7 @@ services:
   db:
     image: postgres
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - com-db:/var/lib/postgresql/data1
     environment:
       - POSTGRES_DB=dproject
       - POSTGRES_USER=postgres
@@ -17,3 +17,6 @@ services:
       - "8000:8000"
     depends_on:
       - db
+volumes:
+  com-db:
+    driver: local

@@ -21,7 +21,7 @@ class TokenVerifyResponseSerializer(serializers.Serializer):
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     # authentication_classes = [JWTAuthentication,]
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['category', 'discount_category']
 
