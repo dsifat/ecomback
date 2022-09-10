@@ -1,6 +1,8 @@
 services:
   db:
     image: postgres
+    ports:
+    - "5435:5432"
     volumes:
       - com-db:/var/lib/postgresql/data1
     environment:

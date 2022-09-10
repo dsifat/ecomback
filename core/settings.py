@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import dj_database_url
 from decouple import config
 from django.conf import settings
 
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'django_seed',
 ]
 
-
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SILENCED_SYSTEM_CHECKS = ['security.W019']
 
@@ -85,14 +85,9 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'redswiss',
-        'USER': 'postgres',
-        'PASSWORD': 'root',
-        'HOST': '127.0.0.1',
-        'PORT': '5433',
-    }
+    "default": dj_database_url.config(
+        default=config('DATABASE_URL'), conn_max_age=600
+    )
 }
 
 # Password validation
@@ -129,9 +124,8 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.BCryptPasswordHasher',
 ]
 
-
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES':(
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -159,7 +153,6 @@ REST_SESSION_LOGIN = False
 JWT_AUTH_COOKIE = 'access-token'
 JWT_AUTH_REFRESH_COOKIE = 'refresh-token'
 
-
 # AUTHENTICATION_BACKENDS = ['core.auth.CoreAuthentication']
 
 # SESSION_ENGINE = ('django.contrib.sessions.backends.signed_cookies')
@@ -169,14 +162,13 @@ SWAGGER_SETTINGS = {
     'REFETCH_SCHEMA_WITH_AUTH': True,
     'REFETCH_SCHEMA_ON_LOGOUT': True,
 
-   'SECURITY_DEFINITIONS': {
+    'SECURITY_DEFINITIONS': {
         'Bearer': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'
         }
     }
-
 
 }
 
@@ -218,7 +210,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'Ecommerce Application',
     'VERSION': '1.0.0',
     # 'SECURITY': [],
-    'SERVE_AUTHENTICATION' : (),
+    'SERVE_AUTHENTICATION': (),
     'SERVE_PERMISSIONS': ()
     # OTHER SETTINGS
 }
@@ -343,7 +335,6 @@ JAZZMIN_SETTINGS = {
     # Add a language dropdown into the admin
     # "language_chooser": True,
 }
-
 
 JAZZMIN_UI_TWEAKS = {
     "navbar_small_text": True,
