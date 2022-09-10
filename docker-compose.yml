@@ -12,7 +12,7 @@ services:
   web:
     build: .
     command: >
-          bash -c "./manage.py runserver 0.0.0.0:8000"
+          bash -c "python manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
