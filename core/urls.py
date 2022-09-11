@@ -1,31 +1,35 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.views.decorators.csrf import csrf_exempt
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from graphene_django.views import GraphQLView
 from rest_framework import routers
+from rest_framework.authtoken.models import TokenProxy
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from apps.ecommerce.api import ProductViewSet, CategoryViewSet
 from decouple import config
 
+from apps.ecommerce.schema import schema
+
+admin.site.site_header = 'Red Swiss'
+admin.site.site_title = 'Red Swiss'
+admin.site.index_title = 'Red Swiss'
+admin.site.unregister(TokenProxy)
 BASE_API_URL = "api/v1/"
 
 router = routers.DefaultRouter()
-@api_view(http_method_names=['GET'])
-def hello(request):
-    return Response({"msg":"hello world"}, status=200)
 router.register(r'product', ProductViewSet, basename="product")
 router.register(r'category', CategoryViewSet, basename="category")
 
-
-
 urlpatterns = [
     path(BASE_API_URL, include(router.urls)),
+    path(BASE_API_URL+"graphql", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
     path(BASE_API_URL+"docs/", SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path(BASE_API_URL+"auth/", include('dj_rest_auth.urls')),
     path(BASE_API_URL+"auth/registration/", include('dj_rest_auth.registration.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('hello/', hello, name="hello")
 ]
 
 if config('DJANGO_SETTINGS_MODULE') == 'core.settings':
@@ -51,7 +55,7 @@ def make_messages(request):
 
 
 urlpatterns += [
-    # path("", RedirectView.as_view(pattern_name="admin:index", permanent=False)),
+    path("", RedirectView.as_view(pattern_name="admin:index", permanent=False)),
     path("admin/doc/", include("django.contrib.admindocs.urls")),
     path("make_messages/", make_messages, name="make_messages"),
     path("i18n/", include("django.conf.urls.i18n")),

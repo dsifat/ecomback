@@ -1,0 +1,12 @@
+.card-primary.card-outline {
+    border-top: none;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    box-shadow: none;
+}
+footer.div{
+    display: none !important;
+}

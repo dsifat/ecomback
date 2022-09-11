@@ -50,3 +50,6 @@ class DCViewset(viewsets.ModelViewSet):
     authentication_classes = []
     permission_classes = []
     queryset = DiscountCategory.objects.all()
+
+
+# class GraphqlView()

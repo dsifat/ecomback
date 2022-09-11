@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'graphene_django',
     'drf_spectacular',
     'rest_framework',
     'rest_framework.authtoken',
@@ -161,7 +162,6 @@ SWAGGER_SETTINGS = {
     'PERSIST_AUTH': True,
     'REFETCH_SCHEMA_WITH_AUTH': True,
     'REFETCH_SCHEMA_ON_LOGOUT': True,
-
     'SECURITY_DEFINITIONS': {
         'Bearer': {
             'type': 'apiKey',
@@ -206,7 +206,7 @@ SIMPLE_JWT = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Deal Buzz API',
+    'TITLE': 'Red Swiss API',
     'DESCRIPTION': 'Ecommerce Application',
     'VERSION': '1.0.0',
     # 'SECURITY': [],
@@ -224,19 +224,19 @@ JAZZMIN_SETTINGS = {
     # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Red Swiss",
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "",
+    "site_logo": "images/favicon.png",
     # Relative path to logo for your site, used for login logo (must be present in static files. Defaults to site_logo)
-    "login_logo": "",
+    "login_logo": "images/logo.png",
     # Logo to use for login form in dark themes (must be present in static files. Defaults to login_logo)
     "login_logo_dark": "",
     # CSS classes that are applied to the logo
-    "site_logo_classes": None,
+    "site_logo_classes": "d-none",
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
-    "site_icon": "",
+    "site_icon": "images/favicon.png",
     # Welcome text on the login screen
     "welcome_sign": "Welcome to the Red Swiss",
     # Copyright on the footer
-    "copyright": "",
+    "copyright": "Red Swiss",
     # The model admin to search from the search bar, search bar omitted if excluded
     # "search_model": "auth.User",
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
@@ -272,11 +272,11 @@ JAZZMIN_SETTINGS = {
     # Whether to aut expand the menu
     "navigation_expanded": True,
     # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": [],
+    "hide_apps": ["rest_framework", "rest_framework.authtoken", "sites"],
     # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": [],
+    "hide_models": ["ecommerce.discountcategory"],
     # List of apps to base side menu (app or model) ordering off of
-    # "order_with_respect_to": ["Make Messages", "auth", "books", "books.author", "books.book", "loans"],
+    "order_with_respect_to": ["ecommerce", "auth"],
     # Custom links to append to app groups, keyed on app name
     # "custom_links": {
     #     "loans": [
@@ -293,17 +293,15 @@ JAZZMIN_SETTINGS = {
     # https://fontawesome.com/icons?d=gallery&m=free&v=5.0.0,5.0.1,5.0.10,5.0.11,5.0.12,5.0.13,5.0.2,5.0.3,5.0.4,5.0.5,5.0.6,5.0.7,5.0.8,5.0.9,5.1.0,
     # 5.1.1,5.2.0,5.3.0,5.3.1,5.4.0,5.4.1,5.4.2,5.13.0,5.12.0,5.11.2,5.11.1,5.10.0,5.9.0,5.8.2,5.8.1,5.7.2,5.7.1,5.7.0,5.6.3,5.5.0,5.4.2
     # for the full list of 5.13.0 free icon classes
-    # "icons": {
-    #     "auth": "fas fa-users-cog",
-    #     "auth.user": "fas fa-user",
-    #     "auth.Group": "fas fa-users",
-    #     "admin.LogEntry": "fas fa-file",
-    #     "books.Author": "fas fa-user",
-    #     "books.Book": "fas fa-book",
-    #     "books.Genre": "fas fa-photo-video",
-    #     "loans.BookLoan": "fas fa-book-open",
-    #     "loans.Library": "fas fa-book-reader",
-    # },
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+        "admin.LogEntry": "fas fa-file",
+        "ecommerce.product": "fas fa-warehouse",
+        "ecommerce.category": "fas fa-list-ol",
+
+    },
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",
@@ -316,10 +314,10 @@ JAZZMIN_SETTINGS = {
     # UI Tweaks #
     #############
     # Relative paths to custom CSS/JS scripts (must be present in static files)
-    "custom_css": None,
+    "custom_css": "custom.css",
     "custom_js": None,
     # Whether to show the UI customizer on the sidebar
-    "show_ui_builder": True,
+    "show_ui_builder": False,
     ###############
     # Change view #
     ###############
@@ -341,28 +339,33 @@ JAZZMIN_UI_TWEAKS = {
     "footer_small_text": True,
     "body_small_text": True,
     "brand_small_text": True,
-    "brand_colour": '#FF0000',
-    "accent": "accent-primary",
+    "brand_colour": "d-none",
+    "accent": "accent-dark",
     "navbar": "navbar-white navbar-light",
-    "no_navbar_border": False,
+    "no_navbar_border": True,
     "navbar_fixed": False,
     "layout_boxed": False,
     "footer_fixed": False,
     "sidebar_fixed": False,
-    "sidebar": "sidebar-danger",
+    "sidebar": "sidebar-dark-danger",
     "sidebar_nav_small_text": True,
     "sidebar_disable_expand": False,
     "sidebar_nav_child_indent": False,
     "sidebar_nav_compact_style": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": True,
-    "theme": "slate",
+    "sidebar_nav_legacy_style": True,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
     "button_classes": {
-        "primary": "btn-outline-primary",
-        "secondary": "btn-outline-secondary",
-        "info": "btn-outline-info",
-        "warning": "btn-outline-warning",
-        "danger": "btn-outline-danger",
-        "success": "btn-outline-success",
-    },
+        "primary": "btn-danger",
+        "secondary": "btn-secondary",
+        "info": "btn-outline-danger",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-danger"
+    }
+}
+
+GRAPHENE = {
+    "SCHEMA": "apps.ecommerce.schema"
 }
