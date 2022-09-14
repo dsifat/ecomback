@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'allauth',
-    'rest_framework_simplejwt',
+    'allauth.account',
     'dj_rest_auth',
     'dj_rest_auth.registration',
     'webpack_loader',
@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'apps.ecommerce',
     'django_seed',
 ]
-
+SITE_ID = 1
+REST_USE_JWT = True
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 SILENCED_SYSTEM_CHECKS = ['security.W019']
 
@@ -369,3 +370,7 @@ JAZZMIN_UI_TWEAKS = {
 GRAPHENE = {
     "SCHEMA": "apps.ecommerce.schema"
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'

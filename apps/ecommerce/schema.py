@@ -15,10 +15,11 @@ class CategoryType(DjangoObjectType):
         fields = "__all__"
 
 class Query(graphene.ObjectType):
-    all_products = graphene.List(ProductType)
+    products = graphene.List(ProductType)
     category_by_name = graphene.Field(CategoryType, name=graphene.String(required=True))
 
-    def resolve_all_products(root, info):
+    def resolve_products(root, info):
         return Product.objects.all()
+
 
 schema = graphene.Schema(query=Query)

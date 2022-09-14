@@ -17,6 +17,8 @@ admin.site.site_header = 'Red Swiss'
 admin.site.site_title = 'Red Swiss'
 admin.site.index_title = 'Red Swiss'
 admin.site.unregister(TokenProxy)
+
+
 BASE_API_URL = "api/v1/"
 
 router = routers.DefaultRouter()
@@ -66,7 +68,6 @@ urlpatterns += i18n_patterns(
     path("admin/password_reset/done/", auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path("reset/done/", auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
-    path("admin/", admin.site.urls),
 )
 
 if settings.DEBUG:
