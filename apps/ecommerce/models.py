@@ -19,7 +19,7 @@ class Brand(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=256)
-    category = models.ManyToManyField(Category)
+    category = models.ManyToManyField(Category, related_name="products")
     slug = models.SlugField(max_length=256, null=True, blank=True)
     short_description = models.TextField(max_length=512, null=True, blank=True)
     specifications = models.JSONField(null=True, blank=True)
@@ -32,10 +32,11 @@ class Product(models.Model):
     new = models.BooleanField(default=True)
     sold = models.BooleanField(default=False)
     discount_percentage = models.IntegerField(default=0, blank=True)
-    discount_category = models.ManyToManyField("ecommerce.DiscountCategory", null=True, blank=True)
+    sale = models.IntegerField(default=0)
+    # discount_category = models.ManyToManyField("ecommerce.DiscountCategory", null=True, blank=True)
     validity = models.DateTimeField(null=True, blank=True)
-    images = models.JSONField(null=True, blank=True)
-    brand = models.ManyToManyField("ecommerce.Brand", null=True, blank=True)
+    # images = models.JSONField(null=True, blank=True)
+    brand = models.ManyToManyField("ecommerce.Brand", related_name="products", null=True, blank=True)
 
 
     class Meta:
@@ -44,6 +45,12 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="image")
+    image = models.ImageField(upload_to="products")
+    class Meta:
+        db_table = "product_image"
 
 class Stock(models.Model):
     product_code = models.CharField(max_length=20)

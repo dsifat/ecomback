@@ -1,3 +1,4 @@
+from allauth.account.models import EmailAddress
 from django.contrib import admin
 from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
@@ -7,6 +8,8 @@ from rest_framework import routers
 from rest_framework.authtoken.models import TokenProxy
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.conf.urls.static import static
+from django.conf import settings
 
 from apps.ecommerce.api import ProductViewSet, CategoryViewSet
 from decouple import config
@@ -17,6 +20,7 @@ admin.site.site_header = 'Red Swiss'
 admin.site.site_title = 'Red Swiss'
 admin.site.index_title = 'Red Swiss'
 admin.site.unregister(TokenProxy)
+admin.site.unregister(EmailAddress)
 
 
 BASE_API_URL = "api/v1/"
@@ -33,6 +37,8 @@ urlpatterns = [
     path(BASE_API_URL+"auth/registration/", include('dj_rest_auth.registration.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if config('DJANGO_SETTINGS_MODULE') == 'core.settings':
     urlpatterns += [path('admin/', admin.site.urls),]
