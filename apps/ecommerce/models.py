@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFill
 
 
 class Category(models.Model):
@@ -49,8 +51,16 @@ class Product(models.Model):
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="image")
     image = models.ImageField(upload_to="products")
+    details = ImageSpecField(source="image",
+                             processors=[ResizeToFill(800,800)],
+                             format="JPEG")
+    card = ImageSpecField(source="image",
+                          processors=[ResizeToFill(300,300)],
+                          format="JPEG")
     class Meta:
         db_table = "product_image"
+        verbose_name = "Product Image"
+        verbose_name_plural = "Product Images"
 
 class Stock(models.Model):
     product_code = models.CharField(max_length=20)
@@ -74,3 +84,9 @@ class DiscountCategory(models.Model):
 
     def __str__(self):
         return f"{self.name}"
+
+class MainBanner(models.Model):
+    name = models.CharField(max_length=50)
+    caption = models.CharField(max_length=127)
+    image = models.ImageField(upload_to="main-banner/",null=True, blank=True)
+    link = models.URLField(null=True, blank=True)

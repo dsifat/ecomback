@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'rest_framework',
     'rest_framework.authtoken',
+    'imagekit',
     'allauth',
     'allauth.account',
     'dj_rest_auth',
@@ -314,7 +315,7 @@ JAZZMIN_SETTINGS = {
     # Related Modal #
     #################
     # Activate Bootstrap modal
-    "related_modal_active": False,
+    "related_modal_active": True,
     #############
     # UI Tweaks #
     #############

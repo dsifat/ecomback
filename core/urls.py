@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from django.conf.urls.static import static
 from django.conf import settings
 
-from apps.ecommerce.api import ProductViewSet, CategoryViewSet
+from apps.ecommerce.api import ProductViewSet, CategoryViewSet, MainBannerApi
 from decouple import config
 
 from apps.ecommerce.schema import schema
@@ -28,6 +28,7 @@ BASE_API_URL = "api/v1/"
 router = routers.DefaultRouter()
 router.register(r'product', ProductViewSet, basename="product")
 router.register(r'category', CategoryViewSet, basename="category")
+router.register(r'mainbanner', MainBannerApi, basename="mainbanner")
 
 urlpatterns = [
     path(BASE_API_URL, include(router.urls)),
