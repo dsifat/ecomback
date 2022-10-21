@@ -56,5 +56,5 @@ class MainBannerApi(viewsets.ModelViewSet):
     authentication_classes = []
     permission_classes = []
     queryset = MainBanner.objects.all()
-    http_method_names = ['GET']
+    http_method_names = ['get']
 # class GraphqlView()

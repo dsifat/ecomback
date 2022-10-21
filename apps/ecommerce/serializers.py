@@ -10,6 +10,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    thumbnail = serializers.ImageField(read_only=True)
     class Meta:
         model = Category
         fields = "__all__"

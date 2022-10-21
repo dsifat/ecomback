@@ -5,7 +5,11 @@ from imagekit.processors import ResizeToFill
 
 class Category(models.Model):
     name = models.CharField(max_length=128)
-    image = models.ImageField(null=True, blank=True)
+    slug = models.SlugField(max_length=128, null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to='category')
+    thumbnail = ImageSpecField(source="image",
+                             processors=[ResizeToFill(300, 300)],
+                             format="JPEG")
 
     def __str__(self):
         return f"{self.name}"
@@ -34,7 +38,7 @@ class Product(models.Model):
     new = models.BooleanField(default=True)
     sold = models.BooleanField(default=False)
     discount_percentage = models.IntegerField(default=0, blank=True)
-    sale = models.IntegerField(default=0)
+    sale_price = models.IntegerField(default=0)
     # discount_category = models.ManyToManyField("ecommerce.DiscountCategory", null=True, blank=True)
     validity = models.DateTimeField(null=True, blank=True)
     # images = models.JSONField(null=True, blank=True)
