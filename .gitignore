@@ -37,4 +37,4 @@ virtualenv
 data/*
 staticfiles/*
 .venv/*
-media/
+media/*

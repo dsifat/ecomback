@@ -4,7 +4,7 @@ services:
     ports:
     - "5435:5432"
     volumes:
-      - com-db:/var/lib/postgresql/data1
+      - db_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=dproject
       - POSTGRES_USER=postgres
@@ -12,13 +12,12 @@ services:
   web:
     build: .
     command: >
-          bash -c "python manage.py runserver 0.0.0.0:8000"
+          bash -c "python manage.py runserver 0.0.0.0:9000"
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "9000:9000"
     depends_on:
       - db
 volumes:
-  com-db:
-    driver: local
+  db_data:

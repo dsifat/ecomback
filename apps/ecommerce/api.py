@@ -23,19 +23,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     # authentication_classes = [JWTAuthentication,]
     # permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category', 'discount_category']
+    filterset_fields = ['category', 'featured', 'new']
 
     # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
-
-    @action(methods=['get'],detail=False, permission_classes=[],
-            url_path='hello', url_name='hello')
-    def hello(self, request, *args, **kwargs):
-        query = Product.objects.all()
-        return Response(data={"msg":"hello world"}, status=200)
-
-    def list(self, request, *args, **kwargs):
-        return Response(data={"msg":"hello world"}, status=200)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
