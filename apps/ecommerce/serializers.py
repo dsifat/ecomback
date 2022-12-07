@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner
+from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, ProductImage
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -9,8 +9,16 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = "__all__"
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    details = serializers.ImageField(read_only=True)
+    card = serializers.ImageField(read_only=True)
+    class Meta:
+        model = ProductImage
+        fields = "__all__"
+
 class ProductSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(many=True)
+    product_image = ProductImageSerializer(many=True, read_only=True)
+    category = CategorySerializer(many=True, read_only=True)
     class Meta:
         model = Product
         fields = "__all__"
