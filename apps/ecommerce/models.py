@@ -41,6 +41,7 @@ class Product(models.Model):
     sale_percentage = models.FloatField(default=0.00)
     sale = models.BooleanField(default=False)
     sale_price = models.IntegerField(default=0)
+    top = models.BooleanField(default=False)
     # discount_category = models.ManyToManyField("ecommerce.DiscountCategory", null=True, blank=True)
     validity = models.DateTimeField(null=True, blank=True)
     # images = models.JSONField(null=True, blank=True)
