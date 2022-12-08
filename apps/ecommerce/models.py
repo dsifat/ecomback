@@ -29,7 +29,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=256, null=True, blank=True)
     short_description = models.TextField(max_length=512, null=True, blank=True)
     specifications = models.JSONField(null=True, blank=True)
-    price = models.IntegerField(default=0)
+    price = models.TextField(null=True, blank=True)
     review = models.IntegerField(default=0)
     ratings = models.FloatField(default=0.0)
     until = models.DateField(null=True, blank=True)
