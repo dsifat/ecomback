@@ -14,16 +14,14 @@ class ProductImageSerializer(serializers.ModelSerializer):
     card = serializers.ImageField(read_only=True)
     class Meta:
         model = ProductImage
-        fields = "__all__"
+        fields = ['image', 'details', 'card']
 
 class ProductSerializer(serializers.ModelSerializer):
-    product_image = ProductImageSerializer(many=True, read_only=True)
+    image = ProductImageSerializer(many=True, read_only=True)
     category = CategorySerializer(many=True, read_only=True)
     class Meta:
         model = Product
         fields = "__all__"
-
-
 
 
 
