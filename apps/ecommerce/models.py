@@ -38,6 +38,7 @@ class Product(models.Model):
     new = models.BooleanField(default=True)
     sold = models.BooleanField(default=False)
     discount_percentage = models.IntegerField(default=0, blank=True)
+    sale = models.BooleanField(default=False)
     sale_price = models.IntegerField(default=0)
     # discount_category = models.ManyToManyField("ecommerce.DiscountCategory", null=True, blank=True)
     validity = models.DateTimeField(null=True, blank=True)
