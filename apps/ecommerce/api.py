@@ -7,8 +7,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner
-from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer
+from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order
+from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer, \
+    OrderSerializer
 
 
 class TokenVerifyResponseSerializer(serializers.Serializer):
@@ -48,4 +49,10 @@ class MainBannerApi(viewsets.ModelViewSet):
     permission_classes = []
     queryset = MainBanner.objects.all()
     http_method_names = ['get']
-# class GraphqlView()
+
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+    authentication_classes = []
+    permission_classes = []
+    queryset = Order.objects.all()
+    http_method_names = ['get', 'post', 'put', 'patch','delete']

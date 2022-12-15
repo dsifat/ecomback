@@ -47,15 +47,12 @@ class Product(models.Model):
     # images = models.JSONField(null=True, blank=True)
     brand = models.ManyToManyField("ecommerce.Brand", related_name="products", null=True, blank=True)
 
-
     class Meta:
         db_table = "product"
         verbose_name_plural = "Products"
 
     def __str__(self):
         return f"{self.name}"
-
-
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="image")
@@ -77,12 +74,42 @@ class Stock(models.Model):
 
 
 class Order(models.Model):
-    cart = models.JSONField()
-    date = models.DateTimeField()
-    location = models.JSONField()
+    status = (
+        (0, 'Cash on Delivery'),
+        (1, 'SSL Commerze')
+    )
+    # cart = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    location = models.TextField()
     is_paid = models.BooleanField(null=True)
-    payment_mode = models.JSONField(null=True)
-    
+    payment_mode = models.IntegerField(choices=status)
+    order_total = models.FloatField(default=0.00)
+    discount = models.FloatField(default=0.00)
+    total = models.FloatField(default=0.00)
+    name = models.CharField(max_length=127)
+    phone = models.CharField(max_length=15)
+
+    @property
+    def created_date(self):
+        return self.created_at.date()
+
+    @property
+    def created_time(self):
+        return self.created_at.time()
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="items",on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField(default=1)
+    price = models.FloatField(default=0.00)
+
+    def __str__(self):
+        return f"{self.order.id}"
+
+    @property
+    def product_name(self):
+        return self.product.name
+
 
 class PaymentMode(models.Model):
     name = models.CharField(max_length=120)
