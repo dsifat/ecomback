@@ -11,7 +11,8 @@ from rest_framework.response import Response
 from django.conf.urls.static import static
 from django.conf import settings
 
-from apps.ecommerce.api import ProductViewSet, CategoryViewSet, MainBannerApi, OrderViewSet
+from apps.ecommerce.api import ProductViewSet, CategoryViewSet, MainBannerApi, OrderViewSet, sslcommerze_get, \
+    SSLGetSessionView, SSLCommerzSuccess
 from decouple import config
 
 from apps.ecommerce.schema import schema
@@ -37,7 +38,9 @@ urlpatterns = [
     path(BASE_API_URL+"docs/", SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path(BASE_API_URL+"auth/", include('dj_rest_auth.urls')),
     path(BASE_API_URL+"auth/registration/", include('dj_rest_auth.registration.urls')),
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path(BASE_API_URL+"payment/sslcommerz/", SSLGetSessionView.as_view(), name="sslcommerze-get"),
+    path(BASE_API_URL+"payment/sslcommerz/success/", SSLCommerzSuccess.as_view(), name="sslcommerze-success"),
+    # path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
