@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
+from decouple import config
 from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order
 from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer, \
     OrderSerializer
@@ -114,5 +114,6 @@ class SSLCommerzSuccess(APIView):
 
     @csrf_exempt
     def post(self, request, format=None):
+        FRONTEND_SUCCESS_URL = config('FRONTEND_SUCCESS_URL', default="http://localhost:3000/payment/success/")
         transaction = request.POST.get("tran_id")
-        return HttpResponseRedirect("http://google.com")
+        return HttpResponseRedirect(FRONTEND_SUCCESS_URL)
