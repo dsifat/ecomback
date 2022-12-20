@@ -77,7 +77,7 @@ def sslcommerze_get(price, order):
     #     protocol = "https"
     # else:
     protocol = "http"
-    post_data['success_url'] = "http://127.0.0.1:9000/api/v1/payment/sslcommerz/success/"
+    post_data['success_url'] = "http://172.104.48.51:9000/api/v1/payment/sslcommerz/success/"
     post_data['fail_url'] = "http://127.0.0.1:9000/sslcommerze/fail/"
     post_data['cancel_url'] = "http://127.0.0.1:9000/sslcommerze/cancel/"
 
