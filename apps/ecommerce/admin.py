@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.ecommerce.models import Product, Category, DiscountCategory, ProductImage, MainBanner, Order
+from apps.ecommerce.models import Product, Category, DiscountCategory, ProductImage, MainBanner, Order, Advertisement
 
 
 class ProductImageInline(admin.TabularInline):
@@ -37,6 +37,10 @@ admin.site.register(DiscountCategory, DiscountCategoryAdmin)
 class MainBannerAdmin(admin.ModelAdmin):
     pass
 admin.site.register(MainBanner, MainBannerAdmin)
+
+class AdvertisementAdmin(admin.ModelAdmin):
+    pass
+admin.site.register(Advertisement, AdvertisementAdmin)
 
 class OrderAdmin(admin.ModelAdmin):
     pass
