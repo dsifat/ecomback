@@ -12,7 +12,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from apps.ecommerce.api import ProductViewSet, CategoryViewSet, MainBannerApi, OrderViewSet, sslcommerze_get, \
-    SSLGetSessionView, SSLCommerzSuccess
+    SSLGetSessionView, SSLCommerzSuccess, AdvertisementApi
 from decouple import config
 
 from apps.ecommerce.schema import schema
@@ -30,6 +30,7 @@ router = routers.DefaultRouter()
 router.register(r'product', ProductViewSet, basename="product")
 router.register(r'category', CategoryViewSet, basename="category")
 router.register(r'mainbanner', MainBannerApi, basename="mainbanner")
+router.register(r'advertisement', AdvertisementApi, basename="advertisement")
 router.register(r'order', OrderViewSet, basename="order")
 
 urlpatterns = [
