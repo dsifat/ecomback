@@ -129,3 +129,9 @@ class MainBanner(models.Model):
 
     def __str__(self):
         return self.name
+
+class Advertisement(models.Model):
+    name = models.CharField(max_length=50)
+    caption = models.CharField(max_length=127)
+    image = models.ImageField(upload_to="advertisement/", null=True, blank=True)
+    link = models.URLField(null=True, blank=True)

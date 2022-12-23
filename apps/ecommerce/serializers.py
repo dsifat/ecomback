@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, ProductImage, Order, OrderItem
+from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, ProductImage, Order, OrderItem, \
+    Advertisement
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -36,6 +37,11 @@ class DCSerializer(serializers.ModelSerializer):
 class MainBannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainBanner
+        fields = "__all__"
+
+class AdvertisementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Advertisement
         fields = "__all__"
 
 

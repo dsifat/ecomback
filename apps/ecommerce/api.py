@@ -11,9 +11,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from decouple import config
-from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order
+from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order, Advertisement
 from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer, \
-    OrderSerializer
+    OrderSerializer, AdvertisementSerializer
 
 
 class TokenVerifyResponseSerializer(serializers.Serializer):
@@ -52,6 +52,13 @@ class MainBannerApi(viewsets.ModelViewSet):
     authentication_classes = []
     permission_classes = []
     queryset = MainBanner.objects.all()
+    http_method_names = ['get']
+
+class AdvertisementApi(viewsets.ModelViewSet):
+    serializer_class = AdvertisementSerializer
+    authentication_classes = []
+    permission_classes = []
+    queryset = Advertisement.objects.all()
     http_method_names = ['get']
 
 class OrderViewSet(viewsets.ModelViewSet):
