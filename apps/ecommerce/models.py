@@ -1,7 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+User = get_user_model()
 
 class Category(models.Model):
     name = models.CharField(max_length=128)
@@ -88,6 +90,7 @@ class Order(models.Model):
     total = models.FloatField(default=0.00)
     name = models.CharField(max_length=127)
     phone = models.CharField(max_length=15)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     @property
     def created_date(self):

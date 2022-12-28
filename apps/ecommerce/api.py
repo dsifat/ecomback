@@ -68,6 +68,18 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     http_method_names = ['get', 'post', 'put', 'patch','delete']
 
+    @action(detail=False)
+    def me(self, request):
+        user = self.request.user
+        queryset = Order.objects.filter(user=user)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = OrderSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        serializer = OrderSerializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
 
 SSLCZ_SESSION_API = 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php'
 
