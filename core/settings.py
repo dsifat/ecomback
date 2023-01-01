@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'ckeditor',
     'graphene_django',
     'drf_spectacular',
     'rest_framework',

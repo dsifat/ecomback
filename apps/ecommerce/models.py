@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
+from ckeditor.fields import RichTextField
 
 User = get_user_model()
 
@@ -30,7 +31,7 @@ class Product(models.Model):
     category = models.ManyToManyField(Category, related_name="products")
     slug = models.SlugField(max_length=256, null=True, blank=True)
     short_description = models.TextField(max_length=512, null=True, blank=True)
-    specifications = models.TextField(null=True, blank=True)
+    specifications = RichTextField(null=True, blank=True)
     price = models.IntegerField(default=0)
     # review = models.IntegerField(default=0)
     ratings = models.FloatField(default=0.0)
