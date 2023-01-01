@@ -5,7 +5,9 @@ from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, permissions, serializers, status
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -23,11 +25,13 @@ class TokenVerifyResponseSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         raise NotImplementedError()
 
+
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     # authentication_classes = [JWTAuthentication,]
     # permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    search_fields = ['name']
     filterset_fields = ['category', 'featured', 'new']
 
     # authentication_classes = [TokenAuthentication]
@@ -47,12 +51,14 @@ class DCViewset(viewsets.ModelViewSet):
     permission_classes = []
     queryset = DiscountCategory.objects.all()
 
+
 class MainBannerApi(viewsets.ModelViewSet):
     serializer_class = MainBannerSerializer
     authentication_classes = []
     permission_classes = []
     queryset = MainBanner.objects.all()
     http_method_names = ['get']
+
 
 class AdvertisementApi(viewsets.ModelViewSet):
     serializer_class = AdvertisementSerializer
@@ -61,12 +67,13 @@ class AdvertisementApi(viewsets.ModelViewSet):
     queryset = Advertisement.objects.all()
     http_method_names = ['get']
 
+
 class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
-    authentication_classes = []
-    permission_classes = []
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Order.objects.all()
-    http_method_names = ['get', 'post', 'put', 'patch','delete']
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     @action(detail=False)
     def me(self, request):
@@ -80,8 +87,8 @@ class OrderViewSet(viewsets.ModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
-
 SSLCZ_SESSION_API = 'https://sandbox.sslcommerz.com/gwprocess/v4/api.php'
+
 
 def sslcommerze_get(price, order):
     post_data = {}
@@ -117,16 +124,19 @@ def sslcommerze_get(price, order):
     post_data["product_profile"] = "General"
 
     response = requests.post(SSLCZ_SESSION_API, post_data)
-    return (response.json()["sessionkey"],response.json()["GatewayPageURL"])
+    return (response.json()["sessionkey"], response.json()["GatewayPageURL"])
+
 
 class SSLGetSessionView(APIView):
     authentication_classes = []
     permission_classes = []
+
     def get(self, request):
         price = request.query_params.get('price')
         order = request.query_params.get('order')
         session, gateway = sslcommerze_get(price, order)
-        return Response(data={"session":session,"gateway":gateway},status=status.HTTP_200_OK)
+        return Response(data={"session": session, "gateway": gateway}, status=status.HTTP_200_OK)
+
 
 class SSLCommerzSuccess(APIView):
     authentication_classes = []

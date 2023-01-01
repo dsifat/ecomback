@@ -138,3 +138,6 @@ class Advertisement(models.Model):
     caption = models.CharField(max_length=127)
     image = models.ImageField(upload_to="advertisement/", null=True, blank=True)
     link = models.URLField(null=True, blank=True)
+
+    def __str__(self):
+        return self.name
