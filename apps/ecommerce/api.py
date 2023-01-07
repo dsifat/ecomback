@@ -32,7 +32,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['name']
-    filterset_fields = ['category', 'featured', 'new']
+    filterset_fields = ['category', 'featured', 'new', 'top']
 
     # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
