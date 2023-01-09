@@ -43,7 +43,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     authentication_classes = []
     permission_classes = []
     queryset = Category.objects.all()
-    # pagination_class = None
+    pagination_class = None
+
 
 class DCViewset(viewsets.ModelViewSet):
     serializer_class = DCSerializer
