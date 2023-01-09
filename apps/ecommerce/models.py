@@ -33,6 +33,7 @@ class Product(models.Model):
     short_description = models.TextField(max_length=512, null=True, blank=True)
     specifications = RichTextField(null=True, blank=True)
     price = models.IntegerField(default=0)
+    code = models.CharField(max_length=60, null=True, blank=True)
     # review = models.IntegerField(default=0)
     ratings = models.FloatField(default=0.0)
     # until = models.DateField(null=True, blank=True)
