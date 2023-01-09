@@ -8,6 +8,7 @@ from rest_framework import viewsets, permissions, serializers, status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -37,13 +38,17 @@ class ProductViewSet(viewsets.ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
 
+class CategoryPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     authentication_classes = []
     permission_classes = []
     queryset = Category.objects.all()
-    pagination_class = None
+    pagination_class = CategoryPagination
 
 
 class DCViewset(viewsets.ModelViewSet):
