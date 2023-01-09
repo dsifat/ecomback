@@ -135,10 +135,10 @@ class MainBanner(models.Model):
         return self.name
 
 class Advertisement(models.Model):
-    name = models.CharField(max_length=50)
-    caption = models.CharField(max_length=127)
+    name = models.CharField(max_length=50, null=True, blank=True)
+    caption = models.CharField(max_length=127, null=True, blank=True)
     image = models.ImageField(upload_to="advertisement/", null=True, blank=True)
     link = models.URLField(null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return str(self.id)
