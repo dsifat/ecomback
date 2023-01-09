@@ -7,6 +7,7 @@ class ProductImageInline(admin.TabularInline):
     model = ProductImage
 
 class ProductAdmin(admin.ModelAdmin):
+    list_display = ['name', 'code']
     inlines = [
         ProductImageInline
     ]
