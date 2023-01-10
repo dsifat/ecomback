@@ -38,8 +38,8 @@ class ProductViewSet(viewsets.ModelViewSet):
     # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
 
-    def paginate_queryset(self, queryset, request, view=None):
-        if 'page' not in request.query_params:
+    def paginate_queryset(self, queryset):
+        if 'page' not in self.request.query_params:
             return None
 
         return super().paginate_queryset(queryset, request, view)
