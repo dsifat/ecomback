@@ -33,10 +33,16 @@ class ProductViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['name']
-    filterset_fields = ['category', 'featured', 'new', 'top']
+    filterset_fields = ['category', 'featured', 'new', 'top', 'sale']
 
     # authentication_classes = [TokenAuthentication]
     queryset = Product.objects.all()
+
+    def paginate_queryset(self, queryset, request, view=None):
+        if 'page' not in request.query_params:
+            return None
+
+        return super().paginate_queryset(queryset, request, view)
 
 class CategoryPagination(PageNumberPagination):
     page_size = 100
