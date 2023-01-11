@@ -143,3 +143,7 @@ class Advertisement(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+class Subscriber(models.Model):
+    email = models.EmailField(max_length=30, unique=True)
+    status = models.BooleanField(default=False)

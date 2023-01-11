@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, ProductImage, Order, OrderItem, \
-    Advertisement
+    Advertisement, Subscriber
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -55,4 +55,9 @@ class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True, read_only=True)
     class Meta:
         model = Order
+        fields = "__all__"
+
+class SubscriberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscriber
         fields = "__all__"

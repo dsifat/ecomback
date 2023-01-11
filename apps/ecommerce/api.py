@@ -14,9 +14,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from decouple import config
-from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order, Advertisement
+from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order, Advertisement, Subscriber
 from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer, \
-    OrderSerializer, AdvertisementSerializer
+    OrderSerializer, AdvertisementSerializer, SubscriberSerializer
 
 
 class TokenVerifyResponseSerializer(serializers.Serializer):
@@ -159,3 +159,9 @@ class SSLCommerzSuccess(APIView):
         FRONTEND_SUCCESS_URL = config('FRONTEND_SUCCESS_URL', default="http://localhost:3000/payment/success/")
         transaction = request.POST.get("tran_id")
         return HttpResponseRedirect(FRONTEND_SUCCESS_URL)
+
+class SubscriberViewset(viewsets.ModelViewSet):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = SubscriberSerializer
+    queryset = Subscriber.objects.all()
