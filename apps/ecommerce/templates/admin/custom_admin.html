@@ -1,0 +1,74 @@
+{% extends "admin/index.html" %}
+{% load static %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 float-right">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa fa-calendar"></i></span>
+                </div>
+                <input type="text" class="form-control" placeholder="Input Your Date Range" aria-label="daterange" id="daterange"
+                       name="daterange"
+                       aria-describedby="daterange">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border">
+                <div class="card-header bg-info"><span>Total Sales</span></div>
+                <div class="card-body"><h4 class="text-center" id="totalsales">430</h4></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-outline-primary">
+                <div class="card-header bg-warning"><span >Total Revenue</span></div>
+                <div class="card-body"><h4 class="text-center" id="totalrevenue">203400</h4></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-outline-primary">
+                <div class="card-header bg-success"><span >Total Products</span></div>
+                <div class="card-body"><h4 class="text-center" id="totalproduct">34</h4></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  $(function () {
+    $('input[name="daterange"]').daterangepicker({
+      opens: 'left'
+    }, function (start, end, label) {
+
+    });
+  });
+  $('input[name="daterange"]').on('apply.daterangepicker', function (ev, picker) {
+
+    axios.get('/api/v1/reports/sales/', {
+      params: {
+        created_at__date__range: `${picker.startDate.format('YYYY-MM-DD')},${picker.endDate.format('YYYY-MM-DD')}`
+      }
+    })
+        .then(function (response) {
+          console.log(response.data.count);
+          $("#totalsales").text(response.data.count);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+
+        });
+  });
+</script>
+{% endblock %}

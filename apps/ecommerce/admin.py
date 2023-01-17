@@ -3,11 +3,13 @@ from django.contrib import admin
 from apps.ecommerce.models import Product, Category, DiscountCategory, ProductImage, MainBanner, Order, Advertisement
 
 
+
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'code', 'stock']
+    search_fields = ['code', 'name']
     inlines = [
         ProductImageInline
     ]
@@ -44,5 +46,9 @@ class AdvertisementAdmin(admin.ModelAdmin):
 admin.site.register(Advertisement, AdvertisementAdmin)
 
 class OrderAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'name','phone','location','created_at']
+
 admin.site.register(Order, OrderAdmin)
+
+admin.site.index_template = "admin/custom_admin.html"
+admin.autodiscover()

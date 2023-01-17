@@ -15,6 +15,7 @@ from apps.ecommerce.api import ProductViewSet, CategoryViewSet, MainBannerApi, O
     SSLGetSessionView, SSLCommerzSuccess, AdvertisementApi, SubscriberViewset
 from decouple import config
 
+from apps.ecommerce.report import OrderCount
 from apps.ecommerce.schema import schema
 
 admin.site.site_header = 'Red Swiss'
@@ -42,6 +43,8 @@ urlpatterns = [
     path(BASE_API_URL+"auth/registration/", include('dj_rest_auth.registration.urls')),
     path(BASE_API_URL+"payment/sslcommerz/", SSLGetSessionView.as_view(), name="sslcommerze-get"),
     path(BASE_API_URL+"payment/sslcommerz/success/", SSLCommerzSuccess.as_view(), name="sslcommerze-success"),
+    path(BASE_API_URL+"reports/sales/", OrderCount.as_view(), name="sales-report"),
+
     # path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 ]
 
