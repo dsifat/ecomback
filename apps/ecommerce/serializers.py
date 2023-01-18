@@ -48,14 +48,28 @@ class AdvertisementSerializer(serializers.ModelSerializer):
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = "__all__"
+        fields = ['product', 'quantity', 'price']
+        extra_kwargs = {
+            'product': {'validators': []},
+        }
+        # def get_product_name(self, obj):
+        #     return
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    items = OrderItemSerializer(many=True, read_only=True)
+    items = OrderItemSerializer(many=True)
     class Meta:
         model = Order
         fields = "__all__"
+        depth = 1
+
+    def create(self, validated_data):
+        items = validated_data.pop('items')
+        order = Order.objects.create(**validated_data)
+        print(order)
+        for item in items:
+            OrderItem.objects.create(order=order, **item)
+        return order
 
 class SubscriberSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,6 +1,4 @@
 import requests
-from dj_rest_auth.jwt_auth import JWTCookieAuthentication
-from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
@@ -87,6 +85,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
     @action(detail=False)
     def me(self, request):
         user = self.request.user
@@ -108,9 +109,9 @@ def sslcommerze_get(price, order):
     order = order
     post_data['store_id'] = "redsw63984ec315c0a"
     post_data['store_passwd'] = "redsw63984ec315c0a@ssl"
-    post_data['total_amount'] = 50
+    post_data['total_amount'] = price
     post_data['currency'] = "BDT"
-    post_data['tran_id'] = "1212"
+    post_data['tran_id'] = order.id
     protocol = "http"
     # if request.is_secure():
     #     protocol = "https"

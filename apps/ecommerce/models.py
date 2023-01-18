@@ -106,7 +106,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name="items",on_delete=models.CASCADE)
-    product = models.OneToOneField(Product, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=1)
     price = models.FloatField(default=0.00)
 
