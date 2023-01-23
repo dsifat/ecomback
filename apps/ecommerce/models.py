@@ -85,7 +85,7 @@ class Order(models.Model):
     # cart = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     location = models.TextField()
-    is_paid = models.BooleanField(null=True)
+    is_paid = models.BooleanField(default=False)
     payment_mode = models.IntegerField(choices=status)
     order_total = models.FloatField(default=0.00)
     discount = models.FloatField(default=0.00)
