@@ -53,7 +53,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['product', 'quantity', 'price']
+        fields = ['product', 'product_name','quantity', 'price']
         extra_kwargs = {
             'product': {'validators': []},
         }
