@@ -58,8 +58,8 @@ class OrderItemSerializer(serializers.ModelSerializer):
             'product': {'validators': []},
         }
 
-        def get_product_name(self, obj):
-            return obj.product.name
+    def get_product_name(self, obj):
+        return obj.product.name
 
 
 class OrderSerializer(serializers.ModelSerializer):
