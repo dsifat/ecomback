@@ -110,6 +110,8 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
     price = models.FloatField(default=0.00)
 
+
+
     def __str__(self):
         return f"{self.order.id}"
 

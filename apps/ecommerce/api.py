@@ -111,13 +111,13 @@ def sslcommerze_get(price, order):
     post_data['store_passwd'] = "redsw63984ec315c0a@ssl"
     post_data['total_amount'] = price
     post_data['currency'] = "BDT"
-    post_data['tran_id'] = order.id
+    post_data['tran_id'] = order
     protocol = "http"
     # if request.is_secure():
     #     protocol = "https"
     # else:
     protocol = "http"
-    post_data['success_url'] = "http://172.104.48.51:9000/api/v1/payment/sslcommerz/success/"
+    post_data['success_url'] = "https://api.red-swiss.com/api/v1/payment/sslcommerz/success/"
     post_data['fail_url'] = "http://127.0.0.1:9000/sslcommerze/fail/"
     post_data['cancel_url'] = "http://127.0.0.1:9000/sslcommerze/cancel/"
 
@@ -159,6 +159,9 @@ class SSLCommerzSuccess(APIView):
     def post(self, request, format=None):
         FRONTEND_SUCCESS_URL = config('FRONTEND_SUCCESS_URL', default="http://localhost:3000/payment/success/")
         transaction = request.POST.get("tran_id")
+        order = Order.objects.filter(id=transaction).first()
+        order.is_paid = True
+        order.save()
         return HttpResponseRedirect(FRONTEND_SUCCESS_URL)
 
 class SubscriberViewset(viewsets.ModelViewSet):

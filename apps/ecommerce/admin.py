@@ -56,6 +56,7 @@ admin.site.register(Advertisement, AdvertisementAdmin)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'phone', 'location', 'created_at', 'total', 'is_paid']
     list_filter = ['created_at']
+    list_per_page = 20
 
     def get_actions(self, request):
         actions = super().get_actions(request)
