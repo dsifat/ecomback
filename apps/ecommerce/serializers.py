@@ -1,10 +1,14 @@
 from dj_rest_auth.serializers import UserDetailsSerializer, PasswordResetSerializer
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
 
 from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, ProductImage, Order, OrderItem, \
     Advertisement, Subscriber
 
+User = get_user_model()
 
 class UserSerializer(UserDetailsSerializer):
     pass
@@ -110,3 +114,37 @@ class MyPasswordResetSerializer(PasswordResetSerializer):
         opts.update(self.get_email_options())
         print(opts)
         self.reset_form.save(**opts)
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+class SetNewPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(
+        min_length=6, max_length=68, write_only=True)
+    token = serializers.CharField(
+        min_length=1, write_only=True)
+
+    class Meta:
+        fields = ['email', 'password', 'token']
+
+    def validate(self, attrs):
+        try:
+            password = attrs.get('password')
+            token = attrs.get('token')
+            email = attrs.get('email')
+
+            user = User.objects.get(email=email)
+            if not PasswordResetTokenGenerator().check_token(user, token):
+                raise AuthenticationFailed('The reset token is invalid', 401)
+
+            user.set_password(password)
+            user.save()
+
+            return (user)
+        except Exception as e:
+            raise AuthenticationFailed('The reset link is invalid', 401)
+
+        return super().validate(attrs)
+

@@ -1,10 +1,18 @@
 import requests
+from allauth.account.utils import send_email_confirmation
+from django.conf import settings
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.mail import send_mail
+from django.core.management import ManagementUtility
 from django.http import HttpResponseRedirect
+from django.utils.encoding import smart_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, permissions, serializers, status
+from rest_framework import viewsets, permissions, serializers, status, generics
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import action
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -12,9 +20,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from decouple import config
-from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order, Advertisement, Subscriber
+from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order, Advertisement, Subscriber, \
+    User
 from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer, \
-    OrderSerializer, AdvertisementSerializer, SubscriberSerializer
+    OrderSerializer, AdvertisementSerializer, SubscriberSerializer, PasswordResetSerializer, SetNewPasswordSerializer
 
 
 class TokenVerifyResponseSerializer(serializers.Serializer):
@@ -169,3 +178,38 @@ class SubscriberViewset(viewsets.ModelViewSet):
     permission_classes = []
     serializer_class = SubscriberSerializer
     queryset = Subscriber.objects.all()
+
+class PasswordResetView(APIView):
+    authentication_classes = []
+    permission_classes = []
+
+    def post(self, request):
+        serializer = PasswordResetSerializer(data=request.data)
+        if serializer.is_valid():
+            email = serializer.data.get('email')
+            if User.objects.filter(email=email).exists():
+                user = User.objects.get(email=email)
+                # uid = urlsafe_base64_encode(smart_bytes(user.id))
+                token = PasswordResetTokenGenerator().make_token(user)
+                email_body = 'Hello, please use this token for resetting your password  \n' + token
+                data = {
+                    'email': user.email,
+                    'email_subject': 'Reset Your Password',
+                    'email_body': email_body
+                }
+                send_mail(subject='Reset Your Password', message=email_body, from_email=settings.DEFAULT_FROM_EMAIL,recipient_list=[user.email])
+            return Response({'data': 'An email has been sent for resetting your password. Please check'},
+                            status=status.HTTP_201_CREATED)
+        else:
+            return Response({'error': 'Please input a correct email'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SetNewPasswordView(APIView):
+    authentication_classes = []
+    permission_classes = []
+    serializer_class = SetNewPasswordSerializer
+
+    def patch(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response({'success': True, 'message': 'Password reset success'}, status=status.HTTP_200_OK)

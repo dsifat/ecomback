@@ -381,7 +381,7 @@ GRAPHENE = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+DEFAULT_FROM_EMAIL = 'hello@example.com'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect

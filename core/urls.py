@@ -12,11 +12,12 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from apps.ecommerce.api import ProductViewSet, CategoryViewSet, MainBannerApi, OrderViewSet, sslcommerze_get, \
-    SSLGetSessionView, SSLCommerzSuccess, AdvertisementApi, SubscriberViewset
+    SSLGetSessionView, SSLCommerzSuccess, AdvertisementApi, SubscriberViewset, PasswordResetView, SetNewPasswordView
 from decouple import config
 
 from apps.ecommerce.report import OrderCount
 from apps.ecommerce.schema import schema
+from apps.ecommerce.serializers import SetNewPasswordSerializer
 
 admin.site.site_header = 'Red Swiss'
 admin.site.site_title = 'Red Swiss'
@@ -39,6 +40,8 @@ urlpatterns = [
     path(BASE_API_URL, include(router.urls)),
     path(BASE_API_URL+"graphql", csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
     path(BASE_API_URL+"docs/", SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path(BASE_API_URL+"auth/password/reset/", PasswordResetView.as_view(), name='rest_password_reset'),
+    path(BASE_API_URL+"auth/password/reset/confirm/", SetNewPasswordView.as_view(), name='rest_password_set'),
     path(BASE_API_URL+"auth/", include('dj_rest_auth.urls')),
     path(BASE_API_URL+"auth/registration/", include('dj_rest_auth.registration.urls')),
     path(BASE_API_URL+"payment/sslcommerz/", SSLGetSessionView.as_view(), name="sslcommerze-get"),
