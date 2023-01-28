@@ -182,13 +182,15 @@ class SubscriberViewset(viewsets.ModelViewSet):
 class PasswordResetView(APIView):
     authentication_classes = []
     permission_classes = []
+    serializer_class = PasswordResetSerializer
 
     def post(self, request):
-        serializer = PasswordResetSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             email = serializer.data.get('email')
             if User.objects.filter(email=email).exists():
                 user = User.objects.get(email=email)
+                print(user.email)
                 # uid = urlsafe_base64_encode(smart_bytes(user.id))
                 token = PasswordResetTokenGenerator().make_token(user)
                 email_body = 'Hello, please use this token for resetting your password  \n' + token
