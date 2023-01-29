@@ -383,10 +383,10 @@ GRAPHENE = {
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
-EMAIL_HOST = 'smtp-relay.sendinblue.com'
-DEFAULT_FROM_EMAIL = 'red.swiss.bd@gmail.com'
-EMAIL_HOST_USER = 'red.swiss.bd@gmail.com' # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = 'QYy3sREjFbAWIrX7'
+EMAIL_HOST = 'smtp.gmail.com'
+DEFAULT_FROM_EMAIL = 'developer.sifat@gmail.com'
+EMAIL_HOST_USER = 'developer.sifat@gmail.com' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = 'rxicndortzpnhyvc'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

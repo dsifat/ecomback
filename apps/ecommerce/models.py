@@ -1,5 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.shortcuts import get_object_or_404
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from ckeditor.fields import RichTextField
@@ -78,24 +81,31 @@ class Stock(models.Model):
 
 
 class Order(models.Model):
-    status = (
+    payment_status = (
         (0, 'Cash on Delivery'),
         (1, 'SSL Commerze')
+    )
+    status = (
+        (1, 'Initiated'),
+        (2, 'Completed'),
+        (3, 'Cancel')
     )
     # cart = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
     location = models.TextField()
     is_paid = models.BooleanField(default=False)
-    payment_mode = models.IntegerField(choices=status)
+    payment_mode = models.IntegerField(choices=payment_status)
     order_total = models.FloatField(default=0.00)
     discount = models.FloatField(default=0.00)
     total = models.FloatField(default=0.00)
     name = models.CharField(max_length=127)
     phone = models.CharField(max_length=15)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    status = models.IntegerField(choices=status, default=1)
 
     def __str__(self):
         return f"{id}"
+
     @property
     def created_date(self):
         return self.created_at.date()
@@ -103,6 +113,17 @@ class Order(models.Model):
     @property
     def created_time(self):
         return self.created_at.time()
+
+@receiver(post_save, sender=Order)
+def on_status_update(sender, instance, created, **kwargs):
+    # write you functionality
+    if created:
+        items = OrderItem.objects.filter(order=instance)
+        if items.exist():
+            for item in items:
+                product = get_object_or_404(Product, id=item.product)
+                product.stock -= 1
+                product.save()
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name="items",on_delete=models.CASCADE)
