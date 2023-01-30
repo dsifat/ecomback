@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from apps.ecommerce.models import Product, Category, DiscountCategory, ProductImage, MainBanner, Order, Advertisement
+from apps.ecommerce.models import Product, Category, DiscountCategory, ProductImage, MainBanner, Order, Advertisement, \
+    OrderItem
 
 
 class ProductImageInline(admin.TabularInline):
@@ -8,7 +9,7 @@ class ProductImageInline(admin.TabularInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['name', 'code', 'stock']
+    list_display = ['name', 'code', 'stock', 'price']
     search_fields = ['code', 'name']
     inlines = [
         ProductImageInline
@@ -52,11 +53,27 @@ class AdvertisementAdmin(admin.ModelAdmin):
 
 admin.site.register(Advertisement, AdvertisementAdmin)
 
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'phone', 'location', 'created_at', 'total', 'is_paid']
     list_filter = ['created_at']
+    readonly_fields = ['location', 'payment_mode', 'order_total', 'discount', 'total', 'name', 'phone']
     list_per_page = 20
+    fields = ['name', 'location', 'order_total', 'discount', 'total', 'payment_mode', 'is_paid', 'status']
+    inlines = [
+        OrderItemInline
+    ]
 
     def get_actions(self, request):
         actions = super().get_actions(request)
