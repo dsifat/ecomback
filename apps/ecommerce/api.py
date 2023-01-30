@@ -21,7 +21,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from decouple import config
 from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, Order, Advertisement, Subscriber, \
-    User
+    User, OrderItem
 from apps.ecommerce.serializers import ProductSerializer, CategorySerializer, DCSerializer, MainBannerSerializer, \
     OrderSerializer, AdvertisementSerializer, SubscriberSerializer, PasswordResetSerializer, SetNewPasswordSerializer
 
@@ -93,6 +93,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = Order.objects.all()
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
+
+    # def create(self, request, *args, **kwargs):
+    #     res = super(OrderViewSet, self).create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

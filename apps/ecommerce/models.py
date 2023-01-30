@@ -114,16 +114,19 @@ class Order(models.Model):
     def created_time(self):
         return self.created_at.time()
 
-@receiver(post_save, sender=Order)
-def on_status_update(sender, instance, created, **kwargs):
-    # write you functionality
-    if created:
-        items = OrderItem.objects.filter(order=instance)
-        if items.exist():
-            for item in items:
-                product = get_object_or_404(Product, id=item.product)
-                product.stock -= 1
-                product.save()
+# @receiver(post_save, sender=Order)
+# def on_status_update(sender, instance, created, **kwargs):
+#     # write you functionality
+#     items = instance.items
+#     print(items)
+#     if created:
+#         print(instance.id)
+#         items = OrderItem.objects.filter(order_id=61)
+#         if items.exists():
+#             for item in items:
+#                 product = get_object_or_404(Product, id=item.product.id)
+#                 product.stock -= 1
+#                 product.save()
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, related_name="items",on_delete=models.CASCADE)

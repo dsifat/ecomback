@@ -393,3 +393,4 @@ EMAIL_USE_TLS = True
 
 CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 CORS_ALLOW_CREDENTIALS = True
+PASSWORD_RESET_TIMEOUT = 2*60*60

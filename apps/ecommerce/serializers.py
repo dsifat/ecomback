@@ -3,15 +3,17 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework import serializers
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed, ValidationError
 
 from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanner, ProductImage, Order, OrderItem, \
     Advertisement, Subscriber
 
 User = get_user_model()
 
+
 class UserSerializer(UserDetailsSerializer):
     pass
+
 
 class CategorySerializer(serializers.ModelSerializer):
     thumbnail = serializers.ImageField(read_only=True)
@@ -62,7 +64,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderItem
-        fields = ['product', 'product_name','quantity', 'price']
+        fields = ['product', 'product_name', 'quantity', 'price']
         extra_kwargs = {
             'product': {'validators': []},
         }
@@ -87,6 +89,12 @@ class OrderSerializer(serializers.ModelSerializer):
         order = Order.objects.create(**validated_data)
         for item in items:
             OrderItem.objects.create(order=order, **item)
+            product = Product.objects.get(id=item['product'].id)
+            product.stock -= item['quantity']
+            if product.stock>0:
+                product.save()
+            else:
+                raise ValidationError({"error": "Product stock out"}, code='invalid')
         return order
 
 
@@ -94,6 +102,7 @@ class SubscriberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscriber
         fields = "__all__"
+
 
 class MyPasswordResetSerializer(PasswordResetSerializer):
     def save(self):
@@ -118,6 +127,7 @@ class MyPasswordResetSerializer(PasswordResetSerializer):
 
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
+
 
 class SetNewPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
@@ -147,4 +157,3 @@ class SetNewPasswordSerializer(serializers.Serializer):
             raise AuthenticationFailed('The reset link is invalid', 401)
 
         return super().validate(attrs)
-
