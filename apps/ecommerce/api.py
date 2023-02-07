@@ -109,7 +109,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     @action(detail=False)
     def me(self, request):
         user = self.request.user
-        queryset = Order.objects.filter(user=user)
+        queryset = Order.objects.filter(user=user).order_by('-created_at')
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = OrderSerializer(page, many=True)
