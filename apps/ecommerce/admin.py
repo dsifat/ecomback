@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
 from apps.ecommerce.models import Product, Category, DiscountCategory, ProductImage, MainBanner, Order, Advertisement, \
     OrderItem
@@ -6,7 +7,15 @@ from apps.ecommerce.models import Product, Category, DiscountCategory, ProductIm
 
 class ProductImageInline(admin.TabularInline):
     model = ProductImage
-
+    fields = ['image', 'image_img']
+    readonly_fields = ['image_img']
+    @mark_safe
+    def image_img(self, obj):
+        if obj.image:
+            return '<img src="%s"  width="50px"/>' % obj.image.url
+        else:
+            return "N/A"
+    image_img.allow_tags = True
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['name', 'code', 'stock', 'price']

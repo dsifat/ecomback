@@ -5,6 +5,7 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.core.management import ManagementUtility
 from django.http import HttpResponseRedirect
+from django.template.loader import render_to_string
 from django.utils.encoding import smart_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
@@ -94,11 +95,16 @@ class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
-    # def create(self, request, *args, **kwargs):
-    #     res = super(OrderViewSet, self).create(request, *args, **kwargs)
-
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        order = serializer.save(user=self.request.user)
+        items = OrderItem.objects.filter(order=order)
+        context = {
+            'order': order,
+            'items': items,
+            'user': order.user
+        }
+        html_email = render_to_string(template_name="email/order_create.html", context=context)
+        send_mail(subject="Order Confirmation", message=html_email, html_message=html_email, fail_silently=True, from_email=settings.DEFAULT_FROM_EMAIL, recipient_list=[order.user.email])
 
     @action(detail=False)
     def me(self, request):

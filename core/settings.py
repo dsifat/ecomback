@@ -394,3 +394,7 @@ EMAIL_USE_TLS = True
 CORS_ALLOW_ALL_ORIGINS = True # If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
 CORS_ALLOW_CREDENTIALS = True
 PASSWORD_RESET_TIMEOUT = 2*60*60
+# AUTH_USER_MODEL = 'ecommerce.User'
+# REST_AUTH_SERIALIZERS = {
+#     'USER_DETAILS_SERIALIZER': 'apps.ecommerce.serializers.UserDetailsSerializer'
+# }

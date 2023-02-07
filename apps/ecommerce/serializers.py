@@ -2,6 +2,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer, PasswordResetSeriali
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.template.loader import render_to_string
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 
@@ -10,10 +11,10 @@ from apps.ecommerce.models import Product, Category, DiscountCategory, MainBanne
 
 User = get_user_model()
 
-
-class UserSerializer(UserDetailsSerializer):
-    pass
-
+# class UserProfileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = UserProfile
+#         fields = "__all__"
 
 class CategorySerializer(serializers.ModelSerializer):
     thumbnail = serializers.ImageField(read_only=True)
@@ -157,3 +158,10 @@ class SetNewPasswordSerializer(serializers.Serializer):
             raise AuthenticationFailed('The reset link is invalid', 401)
 
         return super().validate(attrs)
+
+class UserDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['pk', 'username','first_name', 'last_name', 'email']
+        read_only_fields = ['pk']
+
